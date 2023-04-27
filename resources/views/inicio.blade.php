@@ -1,7 +1,8 @@
-@extends('layouts.testPlantilla')
+@extends('layouts.plantilla')
 
     @section('contenido')
 
-        <h1>Inicio usando una plantilla blade</h1>
+        <h1>Sistema de administración de regiones y destinos</h1>
+
 
     @endsection
