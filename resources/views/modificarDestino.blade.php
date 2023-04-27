@@ -22,11 +22,17 @@
 
             <select name="regID" id="regID" class="form-control" required>
                 @foreach($regiones as $region)
+                    {{--
                     @if ($destino->regID == $region->regID)
                         <option value="{{ $region->regID }}" selected >{{ $region->regNombre }}</option>
                     @else
                         <option value="{{ $region->regID }}">{{ $region->regNombre }}</option>
                     @endif
+                    --}}
+                    {{-- Forma de hacerlo con operador ternario --}}
+                    <option value="{{ $region->regID }}" {{ ($region->regID == $destino->regID) ? 'selected' : ''}} >
+                        {{ $region->regNombre }}
+                    </option>
                 @endforeach
             </select>
             <br>
