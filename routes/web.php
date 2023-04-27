@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+###################################################
+// Routes de prueba
+###################################################
 Route::get('/', function () {
     return view('welcome');
 });
@@ -47,6 +50,9 @@ Route::get('/regiones', function() {
     return view('regiones', ['regiones' => $regiones_array]);
 });
 
+###################################################
+###################################################
+
 
 ### ABM regiones (DB agencia)
 Route::get('/adminRegiones', function () {
@@ -71,7 +77,7 @@ Route::post('/agregarRegion', function() {
                     VALUES ( :regNombre )', [$regNombre]);
 
     return redirect('/adminRegiones')
-        ->with('status', 'Región '.$regNombre.' agregada correctamente');
+        ->with('status', 'Región "'.$regNombre.'" agregada correctamente');
 });
 
 
@@ -98,7 +104,7 @@ Route::post('/modificarRegion', function() {
     );
 
     return redirect('/adminRegiones')
-        ->with('status', 'Región '.$regNombre.' modificada correctamente');
+        ->with('status', 'Región "'.$regNombre.'" modificada correctamente');
 });
 
 Route::get('/eliminarRegion/{regID}', function($regID) {
@@ -108,9 +114,6 @@ Route::get('/eliminarRegion/{regID}', function($regID) {
         FROM regiones
         WHERE regID = ?', [$regID]
     );
-
-
-
 
     return view('eliminarRegion', ['region'=>$region[0]]);
 
@@ -127,9 +130,8 @@ Route::post('/eliminarRegion', function() {
 
 );
 
-
     return redirect('/adminRegiones')
-        ->with('status', 'Región '.$regNombre.' eliminada correctamente');
+        ->with('status', 'Región "'.$regNombre.'" eliminada correctamente');
 });
 
 
@@ -169,27 +171,85 @@ Route::post('/agregarDestino', function () {
 
     DB::insert(
         'INSERT INTO destinos (destNombre, regID, destPrecio, destAsientos, destDisponibles, destActivo)
-            VALUES ( :destNombre, :regID, :destPrecio, :destAsientos, :destDisponibles, :destActivo )', [
+            VALUES ( :destNombre, :regID, :destPrecio, :destAsientos, :destDisponibles, :destActivo );', [
                 'destNombre'=>$destNombre,
                 'regID'=>$regID,
                 'destPrecio'=>$destPrecio,
                 'destAsientos'=>$destAsientos,
                 'destDisponibles'=>$destDisponibles,
-                'destActivo'=>$destActivo
+                'destActivo'=>$destActivo // Esta como default 1 en la DB asi que no hace falta
             ]
     );
 
     return redirect('/adminDestinos')
-        ->with('status', 'Destino '.$destNombre.' agregado correctamente');
+        ->with('status', 'Destino "'.$destNombre.'" agregado correctamente');
+});
+
+Route::get('/modificarDestino/{destID}', function($destID) {
+
+    $destinos = DB::select('SELECT * FROM destinos WHERE destID = ?', [$destID]);
+    $regiones = DB::select('SELECT * FROM regiones');
+
+    return view('modificarDestino', ['destino'=>$destinos[0], 'regiones'=>$regiones]);
+});
+
+Route::post('/modificarDestino', function () {
+
+    $destID = $_POST['destID'];
+    $regID = $_POST['regID'];
+    $destNombre = $_POST['destNombre'];
+    $destPrecio = $_POST['destPrecio'];
+    $destAsientos = $_POST['destAsientos'];
+    $destDisponibles = $_POST['destDisponibles'];
+    $destActivo = $_POST['destActivo'];
+
+    DB::update(
+        'UPDATE destinos
+        SET destNombre=:destNombre,
+            regID=:regID,
+            destPrecio=:destPrecio,
+            destAsientos=:destAsientos,
+            destDisponibles=:destDisponibles,
+            destActivo=:destActivo
+        WHERE destID=:destID;',[
+            'destID'=>$destID,
+            'regID'=>$regID,
+            'destNombre'=>$destNombre,
+            'destPrecio'=>$destPrecio,
+            'destAsientos'=>$destAsientos,
+            'destDisponibles'=>$destDisponibles,
+            'destActivo'=>$destActivo
+        ]
+    );
+
+
+    return redirect('/adminDestinos')
+        ->with('status', 'Destino "'.$destNombre.'" modificado correctamente');
+
 });
 
 
+Route::get('/eliminarDestino/{destID}', function ($destID){
 
+    $destinos = DB::select(
+        'SELECT destID, destNombre FROM destinos WHERE destID=?;', [$destID]
+    );
 
+    return view('/eliminarDestino',['destino'=>$destinos[0]]);
+});
 
+Route::post('/eliminarDestino', function() {
 
+    $destID = $_POST['destID'];
+    $destNombre = $_POST['destNombre'];
 
+    DB::delete(
+        'DELETE FROM destinos WHERE destID = ?;', [$destID]
+    );
 
+    return redirect('/adminDestinos')
+        ->with('status', 'Destino "'.$destNombre.'" eliminado correctamente');
+});
 
 
 

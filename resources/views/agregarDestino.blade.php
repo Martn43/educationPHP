@@ -32,7 +32,7 @@
                        class="form-control" required>
                 <br>
 
-                <button class="btn btn-dark">Agregar</button>
+                <button class="btn btn-dark">Agregar destino</button>
                 <a href="/adminDestinos" class="btn btn-outline-secondary ml-3">
                     Volver a panel
                 </a>

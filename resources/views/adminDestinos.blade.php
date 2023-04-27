@@ -4,6 +4,12 @@
 
         <h1>Panel de administración de destinos</h1>
 
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <table class="table table-striped table-hover table-borderless">
             <thead class="thead-dark">
             <tr>
@@ -24,10 +30,10 @@
                     <td>{{ $destino->destPrecio }}</td>
                     <td>{{ $destino->regNombre }}</td>
                     <td>
-                        <a href="/modificarDestino/{destID}" class="btn btn-outline-secondary">Modificar</a>
+                        <a href="/modificarDestino/{{ $destino->destID }}" class="btn btn-outline-secondary">Modificar</a>
                     </td>
                     <td>
-                        <a href="/eliminarDestino/{destID}" class="btn btn-outline-secondary">Eliminar</a>
+                        <a href="/eliminarDestino/{{ $destino->destID }}" class="btn btn-outline-secondary">Eliminar</a>
                     </td>
                 </tr>
             @endforeach

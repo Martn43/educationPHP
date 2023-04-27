@@ -2,7 +2,7 @@
 
 @section('contenido')
 
-    <h1>Modificación de una nueva región</h1>
+    <h1>Modificación de una región</h1>
 
     <div class="alert bg-light shadow-sm col-8 mx-auto p-4">
         <form action="/modificarRegion" method="post">
@@ -15,10 +15,10 @@
                    value="{{ $region->regNombre }}"
                    class="form-control">
             <br>
-            <input type="text" name="regID" id="regID"
+            <input type="hidden" name="regID" id="regID"
                    value="{{ $region->regID }}"
                    class="form-control">
-            <br>
+
             <button class="btn btn-dark">Modificar</button>
             <a href="/adminRegiones" class="btn btn-outline-secondary ml-3">Volver a panel</a>
         </form>
